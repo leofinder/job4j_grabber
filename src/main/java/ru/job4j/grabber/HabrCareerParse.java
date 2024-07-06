@@ -26,11 +26,6 @@ public class HabrCareerParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public static void main(String[] args) {
-        HabrCareerParse careerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
-        List<Post> list = careerParse.list(SOURCE_LINK);
-    }
-
     private void parse(List<Post> posts, String link) {
         try {
             for (int i = 1; i <= PAGE_COUNT; i++) {

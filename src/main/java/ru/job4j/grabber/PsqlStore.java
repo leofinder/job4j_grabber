@@ -12,38 +12,15 @@ public class PsqlStore implements Store {
 
     private Connection connection;
 
-    public static void main(String[] args) {
-        Properties config = new Properties();
-        try (InputStream input = PsqlStore.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
-            config.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Store store = new PsqlStore(config);
-        store.save(new Post(0, "First Post", "http://example.com/first-post", "This is the text of the first post.", LocalDateTime.of(2023, 1, 1, 10, 12, 53)));
-        store.save(new Post(0, "Second Post",  "http://example.com/second-post", "This is the text of the second post.", LocalDateTime.of(2023, 1, 2, 11, 36, 0)));
-        store.save(new Post(0, "Third Post", "http://example.com/third-post", "This is the text of the third post.",  LocalDateTime.of(2023, 1, 3, 12, 0, 54)));
-        store.save(new Post(0, "Fourth Post", "http://example.com/fourth-post", "This is the text of the fourth post.",  LocalDateTime.of(2023, 1, 4, 13, 21, 7)));
-        store.save(new Post(0, "Fifth Post", "http://example.com/fifth-post", "This is the text of the fifth post.",  LocalDateTime.of(2023, 1, 5, 14, 45, 45)));
-
-        System.out.println(store.findById(2));
-        System.out.println(store.findById(5));
-        System.out.println(store.findById(10));
-
-        List<Post> posts = store.getAll();
-        posts.forEach(System.out::println);
-    }
-
     public PsqlStore(Properties config) {
         try {
-            Class.forName(config.getProperty("rabbit.driver"));
+            Class.forName(config.getProperty("driver"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        String url = config.getProperty("rabbit.url");
-        String user = config.getProperty("rabbit.username");
-        String password = config.getProperty("rabbit.password");
+        String url = config.getProperty("url");
+        String user = config.getProperty("username");
+        String password = config.getProperty("password");
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
